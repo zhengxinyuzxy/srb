@@ -10,7 +10,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public enum ResponseEnum {
 
-    SUCCESSS(0,"成功"),
+    SUCCESS(0,"成功"),
     ERROR(-1, "服务器内部错误"),
 
     //-1xx 服务器错误

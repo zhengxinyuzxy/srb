@@ -2,7 +2,6 @@ package com.mellow.srb.core.controller.admin;
 
 
 import com.mellow.common.exception.Assert;
-import com.mellow.common.exception.BusinessException;
 import com.mellow.common.result.R;
 import com.mellow.common.result.ResponseEnum;
 import com.mellow.srb.core.pojo.entity.IntegralGrade;
@@ -10,6 +9,7 @@ import com.mellow.srb.core.service.IntegralGradeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -27,6 +27,7 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping("/admin/core/integralGrade")
+@Slf4j
 public class AdminIntegralGradeController {
 
     @Resource
@@ -40,10 +41,15 @@ public class AdminIntegralGradeController {
     @ApiOperation("admin端积分等级列表")
     @GetMapping("/list")
     public R listAll() {
+
+        log.info("hi i'm helen");
+        log.warn("warning!!!");
+        log.error("it's a error");
+
         List<IntegralGrade> integralGradeList = integralGradeService.list();
         System.out.println(integralGradeList);
         // 统一返回结果
-        return R.ok().data("list", integralGradeList).Message("积分列表查询成功");
+        return R.ok().data("list", integralGradeList).message("积分列表查询成功");
     }
 
     /**
@@ -59,9 +65,9 @@ public class AdminIntegralGradeController {
             @PathVariable long id) {
         boolean bResult = integralGradeService.removeById(id);
         if (bResult) {
-            return R.ok().Message("根据id删除成功");
+            return R.ok().message("根据id删除成功");
         } else {
-            return R.ok().Message("根据id删除失败");
+            return R.ok().message("根据id删除失败");
         }
     }
 
@@ -85,9 +91,9 @@ public class AdminIntegralGradeController {
 
         boolean saveResult = integralGradeService.save(integralGrade);
         if (saveResult) {
-            return R.ok().Message("新增积分等级成功");
+            return R.ok().message("新增积分等级成功");
         } else {
-            return R.error().Message("新增积分等级失败");
+            return R.error().message("新增积分等级失败");
         }
     }
 
@@ -106,7 +112,7 @@ public class AdminIntegralGradeController {
         if (integralGrade != null) {
             return R.ok().data("integralGrade", integralGrade);
         } else {
-            return R.error().Message("integralGrade数据不存在");
+            return R.error().message("integralGrade数据不存在");
         }
     }
 
@@ -122,9 +128,9 @@ public class AdminIntegralGradeController {
             @RequestBody IntegralGrade integralGrade) {
         boolean updateResult = integralGradeService.updateById(integralGrade);
         if (updateResult) {
-            return R.ok().Message("修改成功");
+            return R.ok().message("修改成功");
         } else {
-            return R.error().Message("修改失败");
+            return R.error().message("修改失败");
         }
     }
 
