@@ -29,9 +29,9 @@ public class Swagger2Config {
     public ApiInfo adminApiInfo() {
         return new ApiInfoBuilder()
                 .title("尚融宝admin端积分等级列表")
-                .description("admin端积分等级管理")
+                .description("本文档描述了尚融宝后台管理系统接口")
                 .version("admin-1.0.0")
-                .contact(new Contact("admin-name", "https://www.admin.cn", "admin@163.com"))
+                .contact(new Contact("admin-zhengxinyu", "https://www.mellow.cn", "mellowzz@163.com"))
                 .build();
     }
 
@@ -49,9 +49,9 @@ public class Swagger2Config {
     public ApiInfo webApiInfo() {
         return new ApiInfoBuilder()
                 .title("尚融宝web端积分等级列表")
-                .description("web端积分等级管理")
+                .description("本文档描述了尚融宝前台管理系统接口")
                 .version("web-1.0.0")
-                .contact(new Contact("web-name", "https://www.web.cn", "web@163.com"))
+                .contact(new Contact("web-zhengxinyu", "https://www.mellow.cn", "mellowzz@163.com"))
                 .build();
     }
 }
