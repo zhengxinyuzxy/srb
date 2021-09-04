@@ -37,9 +37,8 @@ public class AdminDictController {
     public R batchImport(
             @ApiParam(value = "excel数据字典文件", required = true)
             @RequestParam("file") MultipartFile multipartFile) {
-        InputStream inputStream = null;
         try {
-            inputStream = multipartFile.getInputStream();
+            InputStream inputStream = multipartFile.getInputStream();
             dictService.importData(inputStream);
             return R.ok().message("批量导入数据字典成功");
         } catch (Exception e) {

@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.io.InputStream;
 
 /**
@@ -25,10 +26,11 @@ import java.io.InputStream;
 @Service
 public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements DictService {
 
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void importData(InputStream inputStream) {
-        EasyExcel.read(inputStream, ExcelDictDTO.class, new ExcelDictDTOListener()).sheet().doRead();
+        EasyExcel.read(inputStream, ExcelDictDTO.class, new ExcelDictDTOListener(baseMapper)).sheet().doRead();
         log.info("excel导入成功");
     }
 }
