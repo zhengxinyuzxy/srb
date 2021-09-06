@@ -62,7 +62,7 @@ public class AdminIntegralGradeController {
     @DeleteMapping("/remove/{id}")
     public R removeById(
             @ApiParam(value = "参数id", required = true, example = "100")
-            @PathVariable long id) {
+            @PathVariable("id") long id) {
         boolean bResult = integralGradeService.removeById(id);
         if (bResult) {
             return R.ok().message("根据id删除成功");
