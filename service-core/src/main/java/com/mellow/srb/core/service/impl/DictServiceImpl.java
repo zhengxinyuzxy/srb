@@ -9,13 +9,17 @@ import com.mellow.srb.core.mapper.DictMapper;
 import com.mellow.srb.core.service.DictService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -29,6 +33,8 @@ import java.util.List;
 @Service
 public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements DictService {
 
+    @Resource
+    private RedisTemplate redisTemplate;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -43,7 +49,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         List<ExcelDictDTO> excelDictDTOlist = new ArrayList<>(dicts.size());
         dicts.forEach(dict -> {
             ExcelDictDTO excelDictDTO = new ExcelDictDTO();
-            BeanUtils.copyProperties(dict,excelDictDTO);
+            BeanUtils.copyProperties(dict, excelDictDTO);
             excelDictDTOlist.add(excelDictDTO);
         });
         return excelDictDTOlist;
@@ -51,6 +57,18 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
 
     @Override
     public List<Dict> listByParentId(Long parentId) {
+        //先查询redis中是否存在数据列表
+//        List<Dict> dictList = null;
+
+        try {
+            List<Dict> dictList = (List<Dict>) redisTemplate.opsForValue().get("srb:core:dictList:" + parentId);
+            if (dictList != null) {
+                log.info("从redis中取值");
+                return dictList;
+            }
+        } catch (Exception e) {
+            log.error("redis服务器异常：" + ExceptionUtils.getStackTrace(e));
+        }
 
         QueryWrapper<Dict> dictQueryWrapper = new QueryWrapper<>();
         dictQueryWrapper.eq("parent_id", parentId);
@@ -59,6 +77,13 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
             boolean hasChildren = this.hasChildren(dict.getId());
             dict.setHasChildren(hasChildren);
         });
+
+        try {
+            redisTemplate.opsForValue().set("srb:core:dictList:" + parentId, dictList, 5, TimeUnit.MINUTES);
+            log.info("数据存入redis");
+        } catch (Exception e) {
+            log.error("redis服务器异常：" + ExceptionUtils.getStackTrace(e));
+        }
         return dictList;
     }
 

@@ -107,7 +107,7 @@ public class AdminIntegralGradeController {
     @GetMapping("/get/{id}")
     public R getById(
             @ApiParam(value = "查找参数id", required = true, example = "1")
-            @PathVariable Long id) {
+            @PathVariable("id") Long id) {
         IntegralGrade integralGrade = integralGradeService.getById(id);
         if (integralGrade != null) {
             return R.ok().data("integralGrade", integralGrade);
