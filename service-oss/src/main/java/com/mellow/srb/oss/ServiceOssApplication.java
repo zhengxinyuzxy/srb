@@ -1,4 +1,4 @@
-package com.mellow.srb.sms;
+package com.mellow.srb.oss;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,8 +6,8 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan({"com.mellow.srb", "com.mellow.common"})
-public class ServiceSmsApplication {
+public class ServiceOssApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ServiceSmsApplication.class, args);
+        SpringApplication.run(ServiceOssApplication.class, args);
     }
 }
