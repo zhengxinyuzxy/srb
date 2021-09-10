@@ -7,4 +7,9 @@ public interface FileService {
      * 文件上传至阿里云
      */
     String upload(InputStream inputStream, String module, String fileName);
+
+    /**
+     * 文件的删除
+     */
+    void removeFile(String url);
 }
