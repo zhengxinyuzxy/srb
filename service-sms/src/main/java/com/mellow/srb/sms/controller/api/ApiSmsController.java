@@ -46,7 +46,7 @@ public class ApiSmsController {
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("code", code);
-        smsService.send(mobile, SmsProperties.TEMPLATE_CODE, map);
+//        smsService.send(mobile, SmsProperties.TEMPLATE_CODE, map);
 
         redisTemplate.opsForValue().set("srb:sms:code" + mobile, code, 5, TimeUnit.MINUTES);
 
